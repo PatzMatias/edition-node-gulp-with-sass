@@ -12,9 +12,11 @@ const argv = require('minimist')(process.argv.slice(2));
 const config = require('./patternlab-config.json');
 const patternlab = require('@pattern-lab/patternlab-node')(config);
 
+const sass = require('gulp-sass');
+
 function build() {
   return patternlab.build({
-    watch: argv.watch,
+    watch: true,
     cleanPublic: config.cleanPublic
   }).then(() =>{
     // do something else when this promise resolves
@@ -61,6 +63,24 @@ gulp.task('patternlab:serve', function () {
     // do something else when this promise resolves
   });
 });
+
+gulp.task('sass', function () {
+  return gulp.src(config.paths.source.sass+'/**/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest(config.paths.source.css))
+    .pipe(gulp.dest(config.paths.public.css));
+});
+
+ 
+gulp.task('sass:watch', function () {
+  gulp.watch(config.paths.source.sass+'/**/*.scss', ['sass']);
+});
+
+gulp.task('pattern:develop',[
+  'sass',
+  'sass:watch',
+  'patternlab:build',
+  'patternlab:serve']);
 
 gulp.task('patternlab:installplugin', function () {
   patternlab.installplugin(argv.plugin);

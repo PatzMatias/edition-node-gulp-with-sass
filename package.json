@@ -25,10 +25,13 @@
   "bugs": "https://github.com/pattern-lab/edition-node-gulp/issues",
   "author": "Brian Muenzenmeyer",
   "scripts": {
-    "gulp": "gulp -- "
+    "start" : "gulp pattern:develop"
   },
   "license": "MIT",
   "engines": {
     "node": ">=6.0"
+  },
+  "devDependencies": {
+    "gulp-sass": "^4.0.1"
   }
 }
